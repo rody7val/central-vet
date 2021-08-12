@@ -15,12 +15,17 @@ const storeData = {
   plugins: [easyFirestore],
 
   state: {
+  	search: '',
+  	load: true,
   	user: null,
   	isAuthenticated: false,
     pagination: 5,
   },
 
   mutations: {
+    setLoad(state, load) { state.load = load },
+    setSearch(state, name) { state.search = name },
+
     pushPagination(state, qty) {
     	let totalPagination = state.pagination + qty
     	let totalItems = Object.keys(state.clientes.data).length
@@ -38,7 +43,17 @@ const storeData = {
       .values(state.clientes.data)
       .slice(0)
       .slice(-state.pagination)
-    }
+      .reverse()
+    },
+
+    filtro: (state) => {
+      return Object
+      .values(state.clientes.data)
+      .filter(
+        item => item.name.toLowerCase().includes(state.search.toLowerCase())
+      )
+    },
+
   },
 }
 
