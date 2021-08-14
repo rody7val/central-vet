@@ -1,18 +1,27 @@
 import firebase from 'firebase/app';
 import 'firebase/firestore';
+import 'firebase/auth'
 //import 'firebase/storage';
 
-function firestore () {
+const init = (cb) => {
   firebase.initializeApp({
-    apiKey: "AIzaSyADuqq2PHWwS3N3rvaWMmi0RRksAtJUTf4",
-    authDomain: "historia-clinica-cvp.firebaseapp.com",
-    databaseURL: "https://historia-clinica-cvp.firebaseio.com",
-    projectId: "historia-clinica-cvp",
-    storageBucket: "historia-clinica-cvp.appspot.com",
-    messagingSenderId: "112706651486",
-    appId: "1:112706651486:web:e239cc9250df8f36193bcf",
-    measurementId: "G-ED0PFJZCNT"
+    apiKey: "",
+    authDomain: "",
+    databaseURL: "",
+    projectId: "",
+    storageBucket: "",
+    messagingSenderId: "",
+    appId: "",
+    measurementId: "",
   })
+  cb()
+}
+
+const auth = () => {
+  return firebase.auth()
+}
+
+function firestore () {
   return new Promise((resolve, reject) => {
     firebase.firestore().enablePersistence()
       .then(resolve)
@@ -55,7 +64,9 @@ function firestore () {
 //}
 
 export {
-  firebase,
+  init,
+  auth,
   firestore,
   //storage,
+  firebase,
 }

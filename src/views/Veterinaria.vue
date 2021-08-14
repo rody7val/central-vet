@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="view">
     <h1>🐶🐺 Central-Vet</h1>
   </div>
 </template>

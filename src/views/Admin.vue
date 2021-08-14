@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="view">
     <h1>👫 Clientes</h1>
     <section v-if="load">
       <!--search-->
@@ -14,7 +14,7 @@
       </div>
       <!--list-->
       <ul class="list">
-        <li v-for="(item, key) in (!search ? clientes : filtro)" :key="key">
+        <li v-for="(item, key) in (!search ? clientes : clientesByName)" :key="key">
           <p>
             <router-link :to="'/client/'+item.id">
             	<b>{{item.name}}</b><br>
@@ -60,5 +60,10 @@ export default {
 }
 </script>
 <style type="scss">
-	small{text-transform: capitalize}
+	small {
+    display: inline-block;
+  }
+  small:first-letter {
+    text-transform: capitalize;
+  }
 </style>

@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import VuexEasyFirestore from 'vuex-easy-firestore'
 Vue.use(Vuex)
-import { firebase, firestore } from '../config/firebase.js'
+import { firebase } from '../config/firebase.js'
 import Clientes from './modules/Clientes.js'
 
 // do the magic 🧙🏻‍♂️
@@ -23,9 +23,16 @@ const storeData = {
   },
 
   mutations: {
-    setLoad(state, load) { state.load = load },
-    setSearch(state, name) { state.search = name },
-
+    setLoad(state, load) {
+    	state.load = load
+    },
+    setSearch(state, name) {
+    	state.search = name
+    },
+    setAuth(state, data) {
+      state.isAuthenticated = data.isAuthenticated
+      state.user = data.user
+    },
     pushPagination(state, qty) {
     	let totalPagination = state.pagination + qty
     	let totalItems = Object.keys(state.clientes.data).length
@@ -46,7 +53,7 @@ const storeData = {
       .reverse()
     },
 
-    filtro: (state) => {
+    clientesByName: (state) => {
       return Object
       .values(state.clientes.data)
       .filter(
@@ -59,8 +66,5 @@ const storeData = {
 
 // initialise Vuex
 const store = new Vuex.Store(storeData)
-
-// init firestore cloud data base
-firestore()
 
 export default store
