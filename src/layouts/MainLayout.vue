@@ -1,11 +1,14 @@
 <template>
   <div>
+  	<!--header-->
     <div id="navbar" class="shadow">
     	<div class="container nav-content">
       	<nav class="aligner">
-      		<img class="banner shadow" src="../assets/logo-central-vet.jpg">
+      		<img
+            class="banner shadow border"
+            src="../assets/logo-central-vet.jpg">
           <router-link to="/">Veterinaria</router-link>
-          <router-link to="/admin">Clínica</router-link>
+          <router-link to="/clientes">Clínica</router-link>
       	</nav>
       	<nav class="ml-auto">
           <!--auth signin-->
@@ -14,37 +17,66 @@
             @click.prevent="signIn"
           >ACCEDER</button>
           <!--auth signout-->
-          <button
-            v-else
-            @click.prevent="signOut"
-          >SALIR</button>
+          <menuAdmin v-else/>
       	</nav>
       </div>
     </div>
-    <div class="container">
-    	<router-view/>
+    <!--alert-->
+    <div class="alert" v-if="$route.query.msj && !isClose">
+    	<div class="container">
+        {{$route.query.msj}}
+        <div class="alert-close" @click="handleClose">x</div>
+    	</div>
     </div>
+    <!--breadcrumbs-->
+    <div class="subnav" v-if="isAdmin">
+      <nav class="container aligner">
+        <router-link v-for="item in breadcrumbs" :to="item.link" :key="item.name">
+          {{item.name}}
+        </router-link>
+      </nav>
+    </div>
+    <!--view-->
+    <router-view/>
   </div>
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import firebase from 'firebase'
-
-const signIn = () => {
-  const provider = new firebase.auth.GoogleAuthProvider()
-  firebase.auth().signInWithPopup(provider).catch(e=>{alert(e.message)})
-}
-
-const signOut = () => {
-  firebase.auth().signOut().catch(e=>{alert(e.message)})
-}
+import menuAdmin from '../components/menuAdmin'
 
 export default {
-  data() {
-  	return {
-      signIn,
-      signOut,
-  	}
+  components: { menuAdmin },
+
+  data(){
+    return {
+      isClose: false,
+    }
+  },
+
+  computed: {
+    ...mapState(['breadcrumbs']),
+    isAdmin() {
+      return this.$store.state.user
+      //functions required
+      // && this.$store.state.user.admin
+    }
+  },
+
+  methods: {
+    handleClose() {
+      this.isClose = !this.isClose
+      this.$router.push("/login")
+      this.isClose = !this.isClose
+    },
+    signIn() {
+      const provider = new firebase.auth.GoogleAuthProvider()
+      firebase
+      .auth()
+      .signInWithPopup(provider)
+      .catch(e=>{alert(e.message)})
+    },
   }
 }
 </script>

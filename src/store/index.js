@@ -20,6 +20,7 @@ const storeData = {
   	user: null,
   	isAuthenticated: false,
     pagination: 5,
+    breadcrumbs: [],
   },
 
   mutations: {
@@ -32,6 +33,13 @@ const storeData = {
     setAuth(state, data) {
       state.isAuthenticated = data.isAuthenticated
       state.user = data.user
+    },
+    setBreadcrumbs(state, breadcrumbs) {
+      state.breadcrumbs = breadcrumbs.map((item, key) => {
+        let name = (item.name === "") ? "web" : item.name
+        let link = (key > 0) ? `/${breadcrumbs[key-1].name}/${item.name}` : `/${item.name}`
+        return { name, link }
+      })
     },
     pushPagination(state, qty) {
     	let totalPagination = state.pagination + qty

@@ -4,7 +4,8 @@ import firebase from 'firebase'
 
 import Layout from '../layouts/MainLayout.vue'
 import Veterinaria from '../views/Veterinaria.vue'
-import Admin from '../views/Admin.vue'
+import Clientes from '../views/Clientes.vue'
+import Pacientes from '../views/Pacientes.vue'
 import Login from '../views/Login.vue'
 import Err from '../views/Err.vue'
 
@@ -17,7 +18,9 @@ const routes = [
     children: [
       { path: '/', component: Veterinaria },
       { path: '/login', component: Login },
-      { path: '/admin', component: Admin, meta: { requiresAuth: true } },
+      { path: '/clientes', component: Clientes, meta: { requiresAuth: true } },
+      { path: '/clientes/:id', component: Pacientes },
+      //{ path: '/clientes/:id', component: Cliente, meta: { requiresAuth: true } },
     ],
   },
   {
@@ -27,6 +30,7 @@ const routes = [
 ]
 
 const router = new VueRouter({
+  mode: 'history',
   routes,
   //linkActiveClass: "active",
   //linkExactActiveClass: "exact-active",

@@ -1,6 +1,6 @@
 <template>
-  <div class="container">
-    <h1>🐶🐺 Central-Vet</h1>
+  <div>
+    <h1>Pacientes</h1>
   </div>
 </template>
 
