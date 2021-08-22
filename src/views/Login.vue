@@ -1,6 +1,6 @@
 <template>
-  <div class="view">
-    <h1>Login</h1>
+  <div class="container">
+    <h1>Iniciar sesión</h1>
     <!--auth signin-->
     <button
       v-if="!$store.state.isAuthenticated"

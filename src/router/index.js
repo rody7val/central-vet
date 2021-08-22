@@ -4,8 +4,14 @@ import firebase from 'firebase'
 
 import Layout from '../layouts/MainLayout.vue'
 import Veterinaria from '../views/Veterinaria.vue'
+
 import Clientes from '../views/Clientes.vue'
 import Pacientes from '../views/Pacientes.vue'
+
+import newClient from '../views/newClient.vue'
+import editClient from '../views/editClient.vue'
+
+import My from '../views/My.vue'
 import Login from '../views/Login.vue'
 import Err from '../views/Err.vue'
 
@@ -18,9 +24,11 @@ const routes = [
     children: [
       { path: '/', component: Veterinaria },
       { path: '/login', component: Login },
-      { path: '/clientes', component: Clientes, meta: { requiresAuth: true } },
-      { path: '/clientes/:id', component: Pacientes },
-      //{ path: '/clientes/:id', component: Cliente, meta: { requiresAuth: true } },
+      { path: '/my', component: My, meta: {requiresAuth: true} },
+      { path: '/clientes', component: Clientes, meta: {requiresAuth: true} },
+      { path: '/clientes/:id', component: Pacientes, meta: {requiresAuth: true} },
+      { path: '/new/client', component: newClient, meta: {requiresAuth: true} },
+      { path: '/edit/client/:id', component: editClient, meta: {requiresAuth: true} },
     ],
   },
   {

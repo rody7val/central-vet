@@ -1,33 +1,47 @@
 <template>
   <div>
-    <section v-if="load">
-      <!--search-->
-      <div class="search shadow">
-        <div class="nav-content container">
-      	  <span class="aligner">🔥 {{getTotal}} clientes en total</span>
-          <input class="ml-auto"
+    <!--search-->
+    <div class="subnav">
+      <div class="nav-content container">
+        <div>
+          <h2>📁 {{getTotal}} clientes</h2>
+          <input
             @input="searchByName"
             type="search"
             placeholder="🔍 Buscar por nombre"
           >
         </div>
+        <div class="ml-auto">
+          <button @click.prevent="toNewClient">➕ Nuevo Cliente</button>
+        </div>
       </div>
-      <!--view-->
-      <router-view/>
-      <!--list-->
+    </div>
+    <!--list-->
+    <section v-if="load">
       <ul class="list container">
-        <li v-for="(item, key) in (!search ? clientes : clientesByName)" :key="key">
-          <p>
-            <router-link :to="'/clientes/'+item.id">
-            	<b>{{item.name}}</b><br>
-            	<i>{{item.tel}}</i><br>
-            	<small>{{moment.unix(item.created_at.seconds).calendar()}}</small>
-            </router-link>
-          </p>          
+        <li
+          v-for="(item, key) in (!_search ? clientes : clientesByName)"
+          class="nav-content"
+          :key="key"
+        >
+          <router-link :to="'/clientes/'+item.id">
+            <p>
+              <b>{{item.name}}</b>
+            </p>
+            <p v-if="item.tel">📱 {{item.tel}}</p>
+            <p v-if="item.dir">📌 {{item.dir}}</p>
+            <p>
+              <small>
+                creado: {{moment.unix(item.created_at.seconds).calendar()}}
+              </small>
+            </p>
+          </router-link>
+          <button class="ml-auto"  @click="toEditClient(item.id)">📝 Editar</button>
         </li>
       </ul>
-      <button  class="container" @click="getMoreItems">Cargar más</button>
+      <button class="container" @click="getMoreItems">Cargar más</button>
     </section>
+    <!--load-->
     <p class="container" v-else>Cargando...</p>
   </div>
 </template>
@@ -37,32 +51,38 @@ import { mapState, mapGetters } from 'vuex'
 
 export default {
   methods: {
+    toNewClient() {
+      this.$router.push('/new/client')
+    },
+    toEditClient(id) {
+      this.$router.push(`/edit/client/${id}`)
+    },
     getMoreItems() {
       this.$store.commit('pushPagination', 5)
     },
     searchByName(e) {
-    	this.$store.commit('setSearch', e.target.value)
+      this.$store.commit('setSearch', e.target.value)
     }
   },
 
   computed: {
-    ...mapState(['load', 'search']),
+    ...mapState(['load', '_search']),
     ...mapGetters(['clientes', 'clientesByName']),
-  	getTotal() {
-  		return Object.keys(this.$store.state.clientes.data).length
-  	},
+    getTotal() {
+      return Object.keys(this.$store.state.clientes.data).length
+    },
   },
 
-  mounted() {
-    const orderBy = ['created_at']
-    this.$store.dispatch(
-      'clientes/openDBChannel', {clauses: {orderBy}}
-    )
-  }
+  //mounted() {
+  //  const orderBy = ['created_at']
+  //  this.$store.dispatch(
+  //    'clientes/openDBChannel', {clauses: {orderBy}}
+  //  )
+  //}
 }
 </script>
 <style type="scss">
-	small {
+  small {
     display: inline-block;
   }
   small:first-letter {

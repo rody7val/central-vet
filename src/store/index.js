@@ -4,10 +4,11 @@ import VuexEasyFirestore from 'vuex-easy-firestore'
 Vue.use(Vuex)
 import { firebase } from '../config/firebase.js'
 import Clientes from './modules/Clientes.js'
+import Pacientes from './modules/Pacientes.js'
 
 // do the magic 🧙🏻‍♂️
 const easyFirestore = VuexEasyFirestore(
-  [Clientes],
+  [Clientes, Pacientes],
   {logging: true, FirebaseDependency: firebase}
 )
 
@@ -15,7 +16,7 @@ const storeData = {
   plugins: [easyFirestore],
 
   state: {
-  	search: '',
+  	_search: '',
   	load: true,
   	user: null,
   	isAuthenticated: false,
@@ -28,19 +29,19 @@ const storeData = {
     	state.load = load
     },
     setSearch(state, name) {
-    	state.search = name
+      state._search = name
     },
     setAuth(state, data) {
       state.isAuthenticated = data.isAuthenticated
       state.user = data.user
     },
-    setBreadcrumbs(state, breadcrumbs) {
-      state.breadcrumbs = breadcrumbs.map((item, key) => {
-        let name = (item.name === "") ? "web" : item.name
-        let link = (key > 0) ? `/${breadcrumbs[key-1].name}/${item.name}` : `/${item.name}`
-        return { name, link }
-      })
-    },
+    //setBreadcrumbs(state, breadcrumbs) {
+    //  state.breadcrumbs = breadcrumbs.map((item, key) => {
+    //    let name = (item.name === "") ? "web" : item.name
+    //    let link = (key > 0) ? `/${breadcrumbs[key-1].name}/${item.name}` : `/${item.name}`
+    //    return { name, link }
+    //  })
+    //},
     pushPagination(state, qty) {
     	let totalPagination = state.pagination + qty
     	let totalItems = Object.keys(state.clientes.data).length
@@ -65,10 +66,9 @@ const storeData = {
       return Object
       .values(state.clientes.data)
       .filter(
-        item => item.name.toLowerCase().includes(state.search.toLowerCase())
+        item => item.name.toLowerCase().includes(state._search.toLowerCase())
       )
     },
-
   },
 }
 

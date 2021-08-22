@@ -3,7 +3,7 @@
   	<!--header-->
     <div id="navbar" class="shadow">
     	<div class="container nav-content">
-      	<nav class="aligner">
+      	<nav class="nav-content aligner">
       		<img
             class="banner shadow border"
             src="../assets/logo-central-vet.jpg">
@@ -16,8 +16,10 @@
             v-if="!$store.state.isAuthenticated"
             @click.prevent="signIn"
           >ACCEDER</button>
-          <!--auth signout-->
+          <!--auth signout
+          style="margin: 0 auto; display: block;"-->
           <menuAdmin v-else/>
+          <button v-else @click.prevent="signOut">SALIR</button>
       	</nav>
       </div>
     </div>
@@ -28,7 +30,7 @@
         <div class="alert-close" @click="handleClose">x</div>
     	</div>
     </div>
-    <!--breadcrumbs-->
+    <!--breadcrumbs
     <div class="subnav" v-if="isAdmin">
       <nav class="container aligner">
         <router-link v-for="item in breadcrumbs" :to="item.link" :key="item.name">
@@ -36,6 +38,7 @@
         </router-link>
       </nav>
     </div>
+    -->
     <!--view-->
     <router-view/>
   </div>
@@ -56,7 +59,7 @@ export default {
   },
 
   computed: {
-    ...mapState(['breadcrumbs']),
+    //...mapState(['breadcrumbs']),
     isAdmin() {
       return this.$store.state.user
       //functions required
