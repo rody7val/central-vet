@@ -25,18 +25,23 @@
           :key="key"
         >
           <router-link :to="'/clientes/'+item.id">
-            <p>
-              <b>{{item.name}}</b>
-            </p>
+            <p class="item-list uppercase"><b>{{item.name}}</b></p>
             <p v-if="item.tel">📱 {{item.tel}}</p>
             <p v-if="item.dir">📌 {{item.dir}}</p>
-            <p>
-              <small>
-                creado: {{moment.unix(item.created_at.seconds).calendar()}}
-              </small>
+            <p class="text-samll capitalize">
+              <b>creado:</b> {{moment.unix(item.created_at.seconds).calendar()}}
             </p>
           </router-link>
-          <button class="ml-auto"  @click="toEditClient(item.id)">📝 Editar</button>
+          <button
+            class="ml-auto"
+            @click="toEditClient(item.id)">
+            📝 Editar
+          </button>
+          <button
+            class="btn-danger"
+            @click="deleteClient(item.id)">
+            ❌ Borrar
+          </button>
         </li>
       </ul>
       <button class="container" @click="getMoreItems">Cargar más</button>
@@ -51,18 +56,37 @@ import { mapState, mapGetters } from 'vuex'
 
 export default {
   methods: {
+    //utils
+    getClient(id) {
+      return Object
+      .values(this.$store.state.clientes.data)
+      .filter(item => {
+        return item.id == id
+      })[0]
+    },
+    //store sync firestore
+    getMoreItems() {
+      this.$store.commit('pushPagination', 5)
+    },
+    searchByName(e) {
+      this.$store.commit('setSearch', e.target.value)
+    },
+    deleteClient(id) {
+      const client = this.getClient(id)
+      const question = `¿Borrar a ${client.name}?`
+      if(confirm(question))
+        return this.$store.dispatch('clientes/delete', client.id)
+      else
+       return false
+    },
+    //route
     toNewClient() {
       this.$router.push('/new/client')
     },
     toEditClient(id) {
       this.$router.push(`/edit/client/${id}`)
     },
-    getMoreItems() {
-      this.$store.commit('pushPagination', 5)
-    },
-    searchByName(e) {
-      this.$store.commit('setSearch', e.target.value)
-    }
+
   },
 
   computed: {
@@ -81,11 +105,3 @@ export default {
   //}
 }
 </script>
-<style type="scss">
-  small {
-    display: inline-block;
-  }
-  small:first-letter {
-    text-transform: capitalize;
-  }
-</style>

@@ -9,6 +9,7 @@ import Clientes from '../views/Clientes.vue'
 import Pacientes from '../views/Pacientes.vue'
 
 import newClient from '../views/newClient.vue'
+import newPatient from '../views/newPatient.vue'
 import editClient from '../views/editClient.vue'
 
 import My from '../views/My.vue'
@@ -28,6 +29,7 @@ const routes = [
       { path: '/clientes', component: Clientes, meta: {requiresAuth: true} },
       { path: '/clientes/:id', component: Pacientes, meta: {requiresAuth: true} },
       { path: '/new/client', component: newClient, meta: {requiresAuth: true} },
+      { path: '/new/patient/:idCliente', component: newPatient, meta: {requiresAuth: true} },
       { path: '/edit/client/:id', component: editClient, meta: {requiresAuth: true} },
     ],
   },

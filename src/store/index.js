@@ -16,6 +16,7 @@ const storeData = {
   plugins: [easyFirestore],
 
   state: {
+    _id: '',
   	_search: '',
   	load: true,
   	user: null,
@@ -30,6 +31,9 @@ const storeData = {
     },
     setSearch(state, name) {
       state._search = name
+    },
+    setId(state, id) {
+      state._id = id
     },
     setAuth(state, data) {
       state.isAuthenticated = data.isAuthenticated
@@ -67,6 +71,24 @@ const storeData = {
       .values(state.clientes.data)
       .filter(
         item => item.name.toLowerCase().includes(state._search.toLowerCase())
+      )
+    },
+
+    pacientes: state => {
+      return Object
+      .values(state.pacientes.data)
+      .filter(item => item.idCliente.includes(state._id))
+      .slice(0)
+      .slice(-state.pagination)
+      .reverse()
+    },
+
+    pacientesByName: (state) => {
+      return Object
+      .values(state.pacientes.data)
+      .filter(
+        item => item.name.toLowerCase().includes(state._search.toLowerCase())
+        && item.idCliente.includes(state._id)
       )
     },
   },

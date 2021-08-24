@@ -25,8 +25,8 @@
             placeholder="Dirección"
           >          
           <div class="nav-content">
-            <button @click="$router.push('/clientes')">Cancelar</button>
-            <input class="btn-primary" type="submit" value="Guardar">
+            <button @click.prevent="$router.push(getRredirect)">Cancelar</button>
+            <input class="btn-success" type="submit" value="Guardar">
           </div>
         </form>
       </div>
@@ -35,28 +35,38 @@
 </template>
 
 <script>
-import {mapGetters} from 'vuex'
-
 export default {
-	computed: {
-		client() {
-			return this.getClient ? this.getClient : {}
-		},
+  computed: {
+    client() {
+      return this.getClient ? this.getClient : {}
+    },
 
     getClient() {
       return Object
       .values(this.$store.state.clientes.data)
       .filter(item => {
-      	return item.id == this.$route.params.id
+        return item.id == this.$route.params.id
       })[0]
     },
-	},
+
+    getRredirect() {
+      const redirect =
+        this.$router.history &&
+        this.$router.history.current &&
+        this.$router.history.current.query &&
+        this.$router.history.current.query.redirect
+        ? `${this.$router.history.current.query.redirect}`
+        : '/clientes'
+      console.log(redirect)
+      return redirect
+    }
+  },
 
   methods: {
     save() {
       this.$store.dispatch('clientes/set', this.getClient)
-      .then(this.$router.push('/clientes'))
-      .catch(e => alert(e))
+        .then(this.$router.push(this.getRredirect))
+        .catch(e => alert(e))
     }
   }
 }

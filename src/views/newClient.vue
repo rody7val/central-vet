@@ -26,7 +26,7 @@
           >
           <div class="nav-content">
             <button @click="$router.push('/clientes')">Cancelar</button>
-            <input class="btn-primary" type="submit" value="Guardar">
+            <input class="btn-success" type="submit" value="Guardar">
           </div>
         </form>
       </div>
