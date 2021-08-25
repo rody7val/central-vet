@@ -9,32 +9,36 @@
       <div class="card">
         <form @submit.prevent="save">
         	<!-- name -->
+          <label>* Nombre</label>
           <input
             v-model="patient.name"
             type="text"
-            placeholder="* Apellido y nombre"
+            placeholder="Nombre"
             required
           >
           <!-- especie -->
+          <label>* Especie</label>
           <select v-model="patient.dog" required>
-          	<option selected disabled v-bind:value="null">* Seleccionar Especie</option>
+          	<option selected disabled v-bind:value="null">Seleccionar</option>
           	<option v-bind:value="'Perro'">Perro</option>
           	<option v-bind:value="'Gato'">Gato</option>
           </select>
           <!-- sexo -->
+          <label>* Sexo</label>
           <select v-model="patient.feme" required>
-          	<option selected disabled v-bind:value="null">* Seleccionar Sexo</option>
+          	<option selected disabled v-bind:value="null">Seleccionar</option>
           	<option v-bind:value="'Macho'">Macho</option>
           	<option v-bind:value="'Hembra'">Hembra</option>
           </select>
         	<!-- birth -->
-          
-            <input  style="display: inline-block"
-              v-model="patient.birth"
-              type="date"
-              placeholder="Fecha Nacimiento"
-            ><label> (Fecha nacimiento)</label></input>
+          <label>Fecha nacimiento</label>
+          <input
+            v-model="patient.birth"
+            type="date"
+            placeholder="Fecha Nacimiento"
+          />
         	<!-- raza -->
+          <label>Raza</label>
           <input
             v-model="patient.race"
             type="text"
@@ -42,7 +46,7 @@
           >
           <!-- actions -->
           <div class="nav-content">
-            <button @click="$router.push('/pacientes')">Cancelar</button>
+            <button @click.prevent="$router.push(getRredirect)">Cancelar</button>
             <input class="btn-success" type="submit" value="Guardar">
           </div>
         </form>
@@ -53,6 +57,11 @@
 
 <script>
 export default {
+  mounted() {
+    //this.$store.commit('setId', this.client.id)
+    //this.$store.commit('setSearch', '')
+  },
+
   data() {
     return {
       patient: {
@@ -89,8 +98,9 @@ export default {
 
   methods: {
     save() {
-      this.$store.dispatch('pacientes/set', this.client)
-      .then(this.$router.push('/pacientes'))
+      //alert(JSON.stringify(this.patient, null, 2))
+      this.$store.dispatch('pacientes/set', this.patient)
+      .then(this.$router.push(getRredirect))
       .catch(e => alert(e))
     }
   }

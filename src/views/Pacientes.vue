@@ -68,7 +68,12 @@
 import { mapGetters, mapState } from "vuex"
 
 export default {
-	methods: {
+  mounted() {
+    this.$store.commit('setId', this.client.id)
+    this.$store.commit('setSearch', '')
+  },
+
+  methods: {
     getMoreItems() {
       this.$store.commit('pushPagination', 5)
     },
@@ -117,7 +122,7 @@ export default {
       else
        return false
     },
-	},
+  },
 
   computed: {
     ...mapState(['load', '_search']),
@@ -127,11 +132,9 @@ export default {
       return Object
       .values(this.$store.state.clientes.data)
       .filter(item => {
-      	return item.id == this.$route.params.id
+        return item.id == this.$route.params.id
       })[0]
     },
   },
-
-  mounted(){this.$store.commit('setId', this.client.id)}
 }
 </script>

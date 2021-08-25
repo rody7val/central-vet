@@ -55,6 +55,10 @@
 import { mapState, mapGetters } from 'vuex'
 
 export default {
+  mounted() {
+    this.$store.commit('setSearch', '')
+  },
+
   methods: {
     //utils
     getClient(id) {

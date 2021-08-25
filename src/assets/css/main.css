@@ -168,7 +168,7 @@ a, button, input[type=submit]{
   color: #2c3e50;
 }
 .list a:hover, .list a:focus-within  {
-  color: #61428f;
+  color: #873bff;
 }
 .list li {
   padding: 10px;
